@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>vue_demo</title>
+    <script src="/static/js/vue.min.js"></script>
+</head>
+<body>
+{% verbatim myblock %}
+<div id="content">
+    <p>
+        数据的绑定
+        姓名:{{ name }}
+        年龄:{{ age }}
+    </p>
+
+    <p id="1" style="height: 100px;color: red">
+        属性绑定
+    </p>
+    <p v-bind:id="id" v-bind:style="mystyle">
+        属性的绑定
+    </p>
+
+    <p v-if="flag">
+        判断
+    </p>
+
+    <p v-for="one in python_list">
+        循环绑定
+        {{ one }}
+    </p>
+
+    <p v-for="one in mylist">
+        循环
+        {{ one }}
+        {{ one.name }}
+        {{ one.age }}
+    </p>
+
+    <p v-on:click="print">
+        事件绑定
+    </p>
+
+</div>
+{% endverbatim myblock %}
+
+<script>
+    var vue =new Vue(
+        {
+            el:'#content',
+            data:{
+                name:'liulu',
+                age:20,
+                id:345,
+                mystyle:"height: 100px;color: red",
+                flag:true,   //false
+                python_list:[1,2,3,4,5],
+                mylist:[  
+            {"name":"zhangsan","age":19},  
+            {"name":"lisi","age":119},  
+            {"name":"wangwu","age":29},
+                ]
+            },
+            methods:{
+                print:function () {
+                    alert('侯璇')
+
+                }
+            }
+        }
+    )
+
+
+</script>
+
+</body>
+</html>

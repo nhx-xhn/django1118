@@ -1,0 +1,91 @@
+{% extends 'base.html' %}
+
+{% block style %}
+    <script src="/static/js/vue.min.js"></script>
+    <script src="/static/js/vue-resource.js"></script>
+{% endblock %}
+
+
+{% block content %}
+    {% verbatim myblock %}
+        <div id = 'mycontent'>
+     <table class="table">
+        <thead>
+            <tr>
+                <th>商品编号</th>
+                <th>商品名称</th>
+                <th>商品价格</th>
+                <th>商品数量</th>
+                <th>商品产地</th>
+                <th>商品保质期</th>
+                <th>操作</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr v-for='one in goods_list'>
+                <td>{{ one.goods_number }}</td>
+                <td>{{ one.goods_name }}</td>
+                <td>{{ one.goods_price }}</td>
+                <td>{{ one.goods_count }}</td>
+                <td>{{ one.goods_location }}</td>
+                <td>{{ one.goods_safe_date }}</td>
+                <td>
+                    <button class="btn btn-primary">修改</button>
+
+                </td>
+            </tr>
+        </tbody>
+    </table>
+        </div>
+    {% endverbatim myblock %}
+
+{% endblock %}
+{% block script %}
+    <script>
+    Vue.use(VueResource);  //声明下面用的是VueResource
+        var vue=new Vue(
+            {
+                el:'#mycontent',
+                data:{
+                    goods_list:[
+                        {'goods_number':'00001','goods_name':'老白干',"goods_price":"100","goods_count":"100","goods_location":"北京","goods_safe_date":"10"},
+                        {'goods_number':'00002','goods_name':'剑南春',"goods_price":"101","goods_count":"101","goods_location":"天津","goods_safe_date":"11"},
+                        {'goods_number':'00003','goods_name':'梦之蓝',"goods_price":"102","goods_count":"102","goods_location":"南京","goods_safe_date":"12"},
+                        {'goods_number':'00004','goods_name':'天之蓝',"goods_price":"103","goods_count":"103","goods_location":"上海","goods_safe_date":"13"},
+                    ]
+                },
+                //加载页面的时候执行
+                created:function () {
+                    this.$http.get('http://127.0.0.1:8000/API/Goods/').then(
+                        function (data) {
+                            console.log(data['data']);
+                            this.goods_list=data['data'];
+                        },
+                        function (error) {
+                            console.log(error)
+                        }
+                    )
+                }
+
+
+
+                /*created:function () {
+                    $.ajax(
+                        {
+                            url:'http://127.0.0.1:8000/API/Goods/',
+                            data:'',
+                            type:'get',
+                            success:function (data) {
+                                console.log(data);
+                            },
+                            error:function (error) {
+                                console.log(error)
+                            }
+                        }
+                    )
+                }*/
+            }
+        )
+
+    </script>
+{% endblock %}

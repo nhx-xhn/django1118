@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>ajax_rrgister</title>
+    <script src="/static/js/jquery.min.js"></script>
+</head>
+<body>
+<form action="">
+    {% csrf_token %}
+    账号:<input id='username' type="text" name="'username"><span id="spancontent"></span> <br>
+    密码:<input id="password" type="password" name="password"> <br>
+{#    <input type="submit" value="提交">#}
+    <input id="btn" type="button" value="注册">
+</form>
+<p id="content"></p>
+<script>
+    $('#username').blur(
+        function () {
+            //console.log(1111);
+
+            var username=$('#username').val() //获取用户输入的账号内容
+            console.log(username)
+            var url='http://127.0.0.1:8000/app01/ajax_get_req/?username='+username;
+
+            $.ajax({
+                url:url,
+                type:'get',
+                data:'',
+                success:function (data) {
+                    console.log(data);
+                    $('#spancontent').text(data['msg']);
+
+                },
+                error:function (error) {
+                    console.log(error);
+                }
+            })
+        }
+    )
+
+    $('#btn').click(
+        function () {
+        {#console.log(111)#}
+            var username=$('#username').val();
+            var password=$('#password').val();
+            console.log(username);
+            console.log(password);
+            var url='http://127.0.0.1:8000/app01/ajax_post_req/';
+            var send_data={
+                'username':username,
+                'password':password,
+                'csrfmiddlewaretoken':'{{ csrf_token }}'
+            }
+
+            $.ajax({
+                url:url,
+                type:'post',
+                data:send_data,
+                success:function (data) {
+                    console.log(data);
+                    $('#content').text(data['msg']);
+                },
+                error:function (error) {
+                    console.log(error);
+                }
+            })
+    }
+    )
+
+
+</script>
+
+</body>
+</html>
